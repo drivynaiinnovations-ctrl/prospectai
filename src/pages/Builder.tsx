@@ -54,6 +54,8 @@ function LayerToggle({ label, featureKey, layers, toggle, locked }: {
 export function Builder({ selectedProspect }: BuilderProps) {
   const [prospects, setProspects] = useState<Prospect[]>([]);
   const [activeProspect, setActiveProspect] = useState<Prospect | null>(selectedProspect);
+  const [websiteUrl, setWebsiteUrl] = useState('');
+  const [scanLoading, setScanLoading] = useState(false);
   const [rawText, setRawText] = useState('');
   const [sumLoading, setSumLoading] = useState(false);
   const [genLoading, setGenLoading] = useState(false);
@@ -91,6 +93,39 @@ export function Builder({ selectedProspect }: BuilderProps) {
   const toggleLayer = (k: keyof LayerConfig) => {
     if (MANDATORY_FEATURES.includes(k)) return;
     setLayers(l => ({ ...l, [k]: !l[k] }));
+  };
+
+  const scanWebsite = async () => {
+    if (!websiteUrl.trim()) return;
+    setScanLoading(true);
+    setError('');
+    try {
+      const settings = storage.getSettings();
+      const result = await callClaude('scrape', { url: websiteUrl.trim() }, settings);
+      const jsonMatch = result.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error('Could not parse site data');
+      const data = JSON.parse(jsonMatch[0]) as Record<string, string>;
+      setState(s => ({
+        ...s,
+        owner:    data.owner    || s.owner,
+        phone:    data.phone    || s.phone,
+        location: data.location || s.location,
+        stars:    data.stars    || s.stars,
+        years:    data.years    || s.years,
+        services: data.services || s.services,
+        reviews:  data.reviews  || s.reviews,
+        story:    data.story    || s.story,
+        offer:    data.offer    || s.offer,
+        callTracking: data.phone || s.callTracking,
+      }));
+      if (data.name && !activeProspect) {
+        setActiveProspect({ name: data.name, type: data.type || 'Business', phone: data.phone || '', website: websiteUrl, score: 0, tier: 'WARM', rank: 0, signals: [], reason: '' });
+      }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Scan failed');
+    } finally {
+      setScanLoading(false);
+    }
   };
 
   const sumUp = async () => {
@@ -276,6 +311,33 @@ export function Builder({ selectedProspect }: BuilderProps) {
             {activeProspect ? activeProspect.name : 'Builder'}
           </h1>
           <p className="text-text2 text-sm">Fill in the fields below, then generate the master prompt.</p>
+        </div>
+
+        {/* Website Scanner */}
+        <div className="bg-surface border border-border rounded-xl p-4 space-y-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-semibold text-text">Scan Their Website</h3>
+              <p className="text-xs text-text2 mt-0.5">Auto-fill all fields from their existing site</p>
+            </div>
+            <button
+              onClick={scanWebsite}
+              disabled={scanLoading || !websiteUrl.trim()}
+              className="px-3 py-1.5 bg-accent text-white text-xs font-semibold rounded-lg hover:opacity-90 transition disabled:opacity-40"
+            >
+              {scanLoading ? 'Scanning…' : 'Scan Site →'}
+            </button>
+          </div>
+          <div className="flex gap-2">
+            <input
+              type="url"
+              value={websiteUrl}
+              onChange={e => setWebsiteUrl(e.target.value)}
+              placeholder="https://theirbusiness.com"
+              className="flex-1 bg-surface2 border border-border rounded-lg px-3 py-2 text-sm text-text placeholder-text3 focus:outline-none focus:border-accent"
+            />
+          </div>
+          {scanLoading && <p className="text-xs text-text2 animate-pulse">Fetching and analyzing site content…</p>}
         </div>
 
         {/* Sum Up */}

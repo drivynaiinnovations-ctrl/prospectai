@@ -340,6 +340,29 @@ TEXT_START
 TEXT_END`;
 }
 
+function scrapePrompt(text: string) {
+  return `You are extracting business information from a website's text content to pre-fill a site builder form.
+
+Extract every useful detail from the text below. Output ONLY a JSON object with these exact keys. Use empty string "" if not found — never guess or make up data.
+
+{
+  "name": "business name",
+  "type": "business type (e.g. HVAC, Plumber, Roofer)",
+  "phone": "primary phone number",
+  "location": "city, state",
+  "services": "comma-separated list of services offered",
+  "years": "years in business or founding year",
+  "stars": "star rating if mentioned (e.g. 4.8)",
+  "reviews": "notable review quotes or review summary",
+  "story": "about section or owner story",
+  "offer": "any special offer, guarantee, or lead magnet mentioned",
+  "weaknesses": "what's missing: no online booking, no chat, poor mobile, outdated design, etc."
+}
+
+Website text:
+${text.slice(0, 8000)}`;
+}
+
 // ── Handler ───────────────────────────────────────────────────────────────────
 
 async function callClaude(prompt: string, apiKey: string): Promise<string> {
@@ -388,6 +411,28 @@ export default {
         prompt = buildPrompt(payload);
       } else if (mode === 'outreach') {
         prompt = outreachPrompt(payload);
+      } else if (mode === 'scrape') {
+        if (!payload.url) return err('Missing url in payload');
+        let html: string;
+        try {
+          const res = await fetch(payload.url, {
+            headers: { 'User-Agent': 'Mozilla/5.0 (compatible; ProspectAI/1.0)' },
+            signal: AbortSignal.timeout(8000),
+          });
+          html = await res.text();
+        } catch {
+          return err('Could not fetch that URL. The site may block scrapers or be unavailable.');
+        }
+        // Strip HTML tags and collapse whitespace
+        const text = html
+          .replace(/<script[\s\S]*?<\/script>/gi, '')
+          .replace(/<style[\s\S]*?<\/style>/gi, '')
+          .replace(/<[^>]+>/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+        prompt = scrapePrompt(text);
+        const result = await callClaude(prompt, env.ANTHROPIC_API_KEY);
+        return json({ result });
       } else {
         return err(`Unknown mode: ${mode}`);
       }
