@@ -83,11 +83,11 @@ Output as a clean JSON object:
 }
 
 function buildPrompt(payload: Record<string, string>) {
-  return `You are an expert at writing Lovable.dev / Bolt.new prompts for local service business websites powered by GoHighLevel (GHL) AI automation.
+  return `Write ONLY the website build specification below. Do not include any preamble, explanation, or meta-commentary. Start directly with the site details. The output will be pasted directly into Bolt.new or Lovable.dev.
 
-The CORE MISSION of this site: capture every lead 24/7 using AI chat and AI voice, qualify them automatically, and book them directly into the calendar — so the business never misses a job again, even at 2am.
+---
 
-Build a complete, production-ready Lovable.dev prompt for:
+Build a complete, production-ready local service business website for:
 
 Business: ${payload.name}
 Type: ${payload.type}
@@ -211,7 +211,7 @@ TECHNICAL REQUIREMENTS:
 - Meta title: "${payload.name} | ${payload.type} in ${payload.location} | AI-Powered 24/7 Service"
 - OG image configured for social sharing
 
-Write the complete Lovable.dev prompt now. Be extremely specific about layout, copy, colors (primary: ${payload.primaryColor}, accent: ${payload.accentColor}), component structure, and GHL/Vapi integration. The prompt must be copy-paste ready with zero ambiguity.`;
+Colors: primary ${payload.primaryColor}, accent ${payload.accentColor}. Be extremely specific about layout, copy, component structure, and GHL/Vapi integration. Output only the site specification — no commentary.`;
 }
 
 function outreachPrompt(payload: Record<string, string>) {
