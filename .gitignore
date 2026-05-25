@@ -31,3 +31,7 @@ worker/.wrangler/
 # Env
 .env
 .env.local
+
+.dev.vars*
+!.dev.vars.example
+!.env.example
