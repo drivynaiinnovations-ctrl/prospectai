@@ -3,39 +3,50 @@
 @tailwind utilities;
 
 :root {
-  --bg: #0f1117;
-  --surface: #181c27;
-  --surface2: #1e2333;
-  --border: #2a2f42;
-  --text: #e2e8f0;
-  --text2: #8892a4;
-  --text3: #4a5568;
-  --accent: #6366f1;
-  --green: #22c55e;
-  --amber: #f59e0b;
-  --blue: #3b82f6;
-  --red: #ef4444;
+  --bg:       #F5F8FA;
+  --surface:  #FFFFFF;
+  --surface2: #F5F8FA;
+  --border:   #DDE2E8;
+  --text:     #33475B;
+  --text2:    #516F90;
+  --text3:    #99ACC2;
+  --accent:   #FF7A59;
+  --accent2:  #0091AE;
+  --green:    #00BDA5;
+  --amber:    #F5C26B;
+  --blue:     #0091AE;
+  --red:      #F2545B;
+  --sidebar:  #33475B;
+  --sidebar2: #425B76;
 }
 
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Lexend', system-ui, sans-serif; }
 
 /* Tier/score colors */
-.score-hot  { color: #ef4444; }
-.score-warm { color: #f59e0b; }
-.score-cold { color: #6b7280; }
+.score-hot  { color: #F2545B; font-weight: 600; }
+.score-warm { color: #F5A623; font-weight: 600; }
+.score-cold { color: #99ACC2; font-weight: 600; }
 
 /* Status row tinting */
-.status-won      { border-left: 3px solid #22c55e !important; }
-.status-lost     { border-left: 3px solid #ef4444 !important; opacity: 0.7; }
-.status-interested { border-left: 3px solid #f59e0b !important; }
+.status-won      { border-left: 3px solid #00BDA5 !important; }
+.status-lost     { border-left: 3px solid #F2545B !important; opacity: 0.7; }
+.status-interested { border-left: 3px solid #F5A623 !important; }
 
 /* Prospect tier card border */
-.tier-hot  { border-left: 3px solid #ef4444 !important; }
-.tier-warm { border-left: 3px solid #f59e0b !important; }
-.tier-cold { border-left: 3px solid #6b7280 !important; }
+.tier-hot  { border-left: 3px solid #F2545B !important; }
+.tier-warm { border-left: 3px solid #F5A623 !important; }
+.tier-cold { border-left: 3px solid #DDE2E8 !important; }
 
 /* Signal pills */
-.pill-red   { background: rgba(239,68,68,0.15); color: #fca5a5; }
-.pill-amber { background: rgba(245,158,11,0.15); color: #fcd34d; }
-.pill-gray  { background: rgba(107,114,128,0.15); color: #9ca3af; }
+.pill-red   { background: #FDECEA; color: #C0392B; border: 1px solid #F2545B33; }
+.pill-amber { background: #FEF9EC; color: #9A6800; border: 1px solid #F5A62333; }
+.pill-gray  { background: #F5F8FA; color: #516F90; border: 1px solid #DDE2E8; }
+
+/* HubSpot-style card */
+.hs-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
