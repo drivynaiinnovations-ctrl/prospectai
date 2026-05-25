@@ -38,9 +38,9 @@ export const storage = {
   getSettings(): Settings {
     try {
       const saved = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
-      return { workerUrl: 'https://prospectai.drivyn-ai-innovations.workers.dev', ...saved };
+      return { workerUrl: 'https://prospectai-worker.drivyn-ai-innovations.workers.dev', ...saved };
     } catch {
-      return { senderName: '', senderPhone: '', workerUrl: 'https://prospectai.drivyn-ai-innovations.workers.dev', defaultServiceType: 'HVAC' };
+      return { senderName: '', senderPhone: '', workerUrl: 'https://prospectai-worker.drivyn-ai-innovations.workers.dev', defaultServiceType: 'HVAC' };
     }
   },
 
