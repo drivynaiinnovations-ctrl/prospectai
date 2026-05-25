@@ -370,8 +370,22 @@ export function Builder({ selectedProspect }: BuilderProps) {
               <h3 className="text-sm font-semibold text-text">Generated Master Prompt</h3>
               <div className="flex gap-2">
                 <CopyButton text={output} label="Copy Prompt" />
-                <a href="https://bolt.new" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-surface2 border border-border text-text2 hover:text-text text-xs rounded-lg transition">Open Bolt.new ↗</a>
-                <a href="https://lovable.dev" target="_blank" rel="noopener noreferrer" className="px-3 py-1.5 bg-surface2 border border-border text-text2 hover:text-text text-xs rounded-lg transition">Open Lovable ↗</a>
+                <a
+                  href={`https://bolt.new/?prompt=${encodeURIComponent(output)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 bg-[#1C1C1C] text-white hover:opacity-80 text-xs rounded-lg transition font-medium flex items-center gap-1.5"
+                >
+                  ⚡ Open in Bolt
+                </a>
+                <a
+                  href={`https://lovable.dev/new?prompt=${encodeURIComponent(output)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 bg-[#6B4FBB] text-white hover:opacity-80 text-xs rounded-lg transition font-medium flex items-center gap-1.5"
+                >
+                  ♥ Open in Lovable
+                </a>
               </div>
             </div>
             <pre className="bg-surface border border-border rounded-xl p-4 text-xs text-text font-mono whitespace-pre-wrap max-h-96 overflow-y-auto">{output}</pre>
