@@ -83,9 +83,11 @@ Output as a clean JSON object:
 }
 
 function buildPrompt(payload: Record<string, string>) {
-  return `You are an expert at writing Lovable.dev / Bolt.new prompts for local service business websites.
+  return `You are an expert at writing Lovable.dev / Bolt.new prompts for local service business websites powered by GoHighLevel (GHL) AI automation.
 
-Create a comprehensive, detailed prompt to build a complete, production-ready website for:
+The CORE MISSION of this site: capture every lead 24/7 using AI chat and AI voice, qualify them automatically, and book them directly into the calendar — so the business never misses a job again, even at 2am.
+
+Build a complete, production-ready Lovable.dev prompt for:
 
 Business: ${payload.name}
 Type: ${payload.type}
@@ -98,32 +100,118 @@ Services: ${payload.services}
 Tone: ${payload.tone}
 Primary color: ${payload.primaryColor}
 Accent color: ${payload.accentColor}
-Font preference: ${payload.font || 'modern sans-serif'}
+Font: ${payload.font || 'modern sans-serif'}
 Aesthetic: ${payload.aesthetic || 'clean and professional'}
 Reviews: ${payload.reviews || 'none provided'}
 Story: ${payload.story || 'none provided'}
-Offer: ${payload.offer}
+Lead offer: ${payload.offer}
 Call tracking number: ${payload.callTracking || payload.phone}
-Headline A: ${payload.headlineA || ''}
-Headline B: ${payload.headlineB || ''}
 
-Layers to include:
-- Hero section: ${payload.layerHero}
-- Services section: ${payload.layerServices}
-- Testimonials: ${payload.layerTestimonials}
-- About section: ${payload.layerAbout}
-- FAQ section: ${payload.layerFaq}
-- Contact/CTA: ${payload.layerContact}
+---
 
-Mandatory features to include:
-- AI chat widget (AlexChat)
-- Vapi voice AI call button
-- Online booking/appointment form
-- Mobile-first responsive design
-- Google Analytics ready
-- Fast loading (optimized images)
+HERO SECTION — The headline must be built around these 3 pain points specific to a ${payload.type} business:
+1. Missed calls = missed revenue (most ${payload.type} jobs go to whoever answers first)
+2. Leads go cold overnight (no one following up after hours)
+3. Competitors are already using AI to answer, qualify, and book while you sleep
 
-Write the full Lovable.dev prompt now. Be specific about layout, colors, copy, and functionality. The prompt should be copy-paste ready.`;
+Write THREE headline variations targeting these pain points. Use direct, punchy language. Example structures:
+- "Stop Losing Jobs to Voicemail"
+- "Your Next Customer Called at 11pm. Did You Answer?"
+- "AI Answers Every Call. Books Every Job. 24/7."
+
+The hero subheading should explain the solution in one sentence: AI chat + AI voice that qualifies leads and books appointments automatically — day or night.
+
+Primary CTA button: "Get a Free AI Demo" (triggers the AI chat widget)
+Secondary CTA: "Call Now: ${payload.callTracking || payload.phone}"
+
+---
+
+LEAD CAPTURE & AI QUALIFICATION FLOW (most important section):
+Build a visually prominent section explaining the 24/7 AI system. Show a 4-step flow:
+Step 1 — Visitor lands on site (any time, day or night)
+Step 2 — AI Chat OR AI Voice greets them, asks: What do you need help with today?
+Step 3 — AI qualifies: collects name, phone, issue type, urgency level, location
+Step 4 — Emergency? Escalates to live call via Vapi. Routine? Books directly into GHL calendar and sends confirmation text.
+
+Style this as a clean timeline or icon-card flow. Headline: "Never Miss Another Lead — We Run 24/7"
+
+---
+
+AI CHAT WIDGET (bottom-right corner, always visible):
+- Powered by GHL conversational AI
+- Opens with: "Hi! I'm [Business Name]'s AI assistant. Are you dealing with an emergency or looking to schedule service?"
+- Collects: name → phone → issue description → urgency
+- If EMERGENCY: shows Vapi voice call button + phone number prominently
+- If ROUTINE: shows available time slots from GHL calendar, confirms booking, sends SMS confirmation
+- Widget color matches primary brand color
+
+---
+
+VAPI VOICE AI BUTTON (floating, visible on all pages):
+- Microphone icon button fixed bottom-left
+- Label: "Talk to AI Now"
+- On click: initiates Vapi voice call
+- Voice agent introduces itself, runs the same qualification script as the chat widget
+- Ends with booking confirmation or escalation to live staff
+
+---
+
+SERVICES SECTION:
+Grid of service cards for: ${payload.services}
+Each card: icon + service name + 1-line description + "Get a Quote" button (triggers chat widget)
+
+---
+
+SOCIAL PROOF / TRUST STRIP:
+- Star rating: ${payload.stars} stars
+- Reviews: ${payload.reviews}
+- Badges: "Licensed & Insured", "Same-Day Service Available", "AI-Powered 24/7 Support"
+- Years in business: ${payload.years}
+
+---
+
+WHY US SECTION — 3 columns:
+1. "We Answer 24/7" — AI never sleeps. Your competitors' voicemail does.
+2. "Book in 60 Seconds" — Our AI qualifies and schedules while you're on the job.
+3. "Real Pros, Real Fast" — ${payload.years} years serving ${payload.location}.
+
+---
+
+ABOUT / STORY:
+${payload.story || `${payload.name} has been serving ${payload.location} for ${payload.years} years. We built this AI system because we were tired of losing jobs to missed calls.`}
+
+---
+
+FAQ SECTION (5 questions minimum):
+- "How does the AI chat work?"
+- "Can the AI handle emergencies?"
+- "What happens after I book online?"
+- "Is my information secure?"
+- "Do I talk to a real person or AI?" (answer: AI qualifies, real pros do the work)
+
+---
+
+FOOTER:
+- Logo + tagline: "Powered by AI. Backed by Experience."
+- Phone: ${payload.callTracking || payload.phone}
+- Location: ${payload.location}
+- Links: Services, About, Book Now, Privacy Policy
+- "AI chat available 24/7" badge
+
+---
+
+TECHNICAL REQUIREMENTS:
+- Mobile-first, fully responsive
+- Sticky header with phone number + "Book Now" CTA always visible
+- GHL embed for calendar booking widget
+- Vapi SDK integrated (voice call button)
+- GHL chat widget script in <head>
+- Google Analytics 4 + conversion events on: chat open, call click, form submit, booking complete
+- Page load < 2s (lazy load images, no heavy libraries)
+- Meta title: "${payload.name} | ${payload.type} in ${payload.location} | AI-Powered 24/7 Service"
+- OG image configured for social sharing
+
+Write the complete Lovable.dev prompt now. Be extremely specific about layout, copy, colors (primary: ${payload.primaryColor}, accent: ${payload.accentColor}), component structure, and GHL/Vapi integration. The prompt must be copy-paste ready with zero ambiguity.`;
 }
 
 function outreachPrompt(payload: Record<string, string>) {
