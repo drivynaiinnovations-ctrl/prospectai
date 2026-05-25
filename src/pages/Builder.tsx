@@ -130,7 +130,7 @@ export function Builder({ selectedProspect }: BuilderProps) {
       const settings = storage.getSettings();
       const activeLayerNames = (Object.keys(layers) as (keyof LayerConfig)[])
         .filter(k => layers[k]).join(', ');
-      const result = await callClaude('buildPrompt', {
+      const result = await callClaude('build', {
         name: activeProspect.name,
         type: activeProspect.type,
         signals: activeProspect.signals.join(', '),
