@@ -83,135 +83,233 @@ Output as a clean JSON object:
 }
 
 function buildPrompt(payload: Record<string, string>) {
-  return `Write ONLY the website build specification below. Do not include any preamble, explanation, or meta-commentary. Start directly with the site details. The output will be pasted directly into Bolt.new or Lovable.dev.
-
----
-
-Build a complete, production-ready local service business website for:
+  return `Build a complete, production-ready website for the following local service business. This site runs on a full AI automation stack: GoHighLevel (GHL) CRM + AI Chat + Vapi Voice AI + automated follow-up sequences. Every section must DEMONSTRATE and PROVE these capabilities — not just mention them.
 
 Business: ${payload.name}
 Type: ${payload.type}
 Owner: ${payload.owner || 'N/A'}
 Phone: ${payload.phone}
 Location: ${payload.location}
-Stars: ${payload.stars}
+Stars: ${payload.stars} stars
 Years in business: ${payload.years}
 Services: ${payload.services}
 Tone: ${payload.tone}
 Primary color: ${payload.primaryColor}
 Accent color: ${payload.accentColor}
 Font: ${payload.font || 'modern sans-serif'}
-Aesthetic: ${payload.aesthetic || 'clean and professional'}
 Reviews: ${payload.reviews || 'none provided'}
-Story: ${payload.story || 'none provided'}
-Lead offer: ${payload.offer}
+Story: ${payload.story || ''}
+Offer: ${payload.offer}
 Call tracking number: ${payload.callTracking || payload.phone}
 
----
+===========================
+SECTION 1 — HERO
+===========================
+Sticky top nav: logo left, phone number center (click-to-call), "Book Now" button right.
 
-HERO SECTION — The headline must be built around these 3 pain points specific to a ${payload.type} business:
-1. Missed calls = missed revenue (most ${payload.type} jobs go to whoever answers first)
-2. Leads go cold overnight (no one following up after hours)
-3. Competitors are already using AI to answer, qualify, and book while you sleep
+Hero background: bold, high-contrast. Left side: headline + subhead + CTAs. Right side: phone mockup or animated chat widget preview showing a real conversation.
 
-Write THREE headline variations targeting these pain points. Use direct, punchy language. Example structures:
-- "Stop Losing Jobs to Voicemail"
-- "Your Next Customer Called at 11pm. Did You Answer?"
-- "AI Answers Every Call. Books Every Job. 24/7."
+Headline — pick the strongest of these 3 pain points for a ${payload.type} business:
+• "Stop Losing Jobs to Voicemail — Our AI Answers Every Call"
+• "Your Competitors Book While You Sleep. Now You Can Too."
+• "Every Missed Call Is a Job Gone. We Fixed That."
 
-The hero subheading should explain the solution in one sentence: AI chat + AI voice that qualifies leads and books appointments automatically — day or night.
+Subheadline: "AI-powered chat and voice that answers, qualifies, and books appointments 24/7 — even at 2am."
 
-Primary CTA button: "Get a Free AI Demo" (triggers the AI chat widget)
-Secondary CTA: "Call Now: ${payload.callTracking || payload.phone}"
+CTA 1 (primary, large): "Try the AI Demo Now" → opens live chat widget
+CTA 2 (secondary): "Call ${payload.callTracking || payload.phone}"
 
----
+Trust bar below hero: ★${payload.stars} stars · Licensed & Insured · Same-Day Available · AI-Powered 24/7
 
-LEAD CAPTURE & AI QUALIFICATION FLOW (most important section):
-Build a visually prominent section explaining the 24/7 AI system. Show a 4-step flow:
-Step 1 — Visitor lands on site (any time, day or night)
-Step 2 — AI Chat OR AI Voice greets them, asks: What do you need help with today?
-Step 3 — AI qualifies: collects name, phone, issue type, urgency level, location
-Step 4 — Emergency? Escalates to live call via Vapi. Routine? Books directly into GHL calendar and sends confirmation text.
+===========================
+SECTION 2 — LIVE AI DEMO (most important section)
+===========================
+Headline: "See It Work — Right Now"
+Subheadline: "This is the same AI your customers will talk to. Try it."
 
-Style this as a clean timeline or icon-card flow. Headline: "Never Miss Another Lead — We Run 24/7"
+Two side-by-side demo cards:
 
----
+CARD 1 — AI Chat Demo:
+- Embedded live GHL chat widget (fully functional)
+- Label above: "💬 Chat with our AI"
+- Show a preview of the conversation script:
+  AI: "Hi! I'm ${payload.name}'s AI assistant. Emergency or scheduling?"
+  Customer: "My AC stopped working"
+  AI: "I can help. Is this affecting your whole home or one zone?"
+  Customer: "Whole home"
+  AI: "Got it — urgent situation. Let me connect you or grab your info to dispatch fast."
+- Below preview: "This AI collects name, phone, issue, and urgency — then books or escalates automatically"
 
-AI CHAT WIDGET (bottom-right corner, always visible):
-- Powered by GHL conversational AI
-- Opens with: "Hi! I'm [Business Name]'s AI assistant. Are you dealing with an emergency or looking to schedule service?"
-- Collects: name → phone → issue description → urgency
-- If EMERGENCY: shows Vapi voice call button + phone number prominently
-- If ROUTINE: shows available time slots from GHL calendar, confirms booking, sends SMS confirmation
-- Widget color matches primary brand color
+CARD 2 — AI Voice Demo:
+- Large microphone button: "🎙️ Call the AI Now"
+- Powered by Vapi — initiates real voice call when clicked
+- Label: "Hear exactly what your customers hear when they call after hours"
+- Script preview:
+  "Thank you for calling ${payload.name}! I'm your AI assistant. Are you experiencing an emergency or looking to schedule service?"
+- Below: "Available 24/7. Qualifies leads. Books appointments. Escalates emergencies."
 
----
+===========================
+SECTION 3 — HOW THE AUTOMATION WORKS
+===========================
+Headline: "One System. Zero Missed Leads."
+Subheadline: "Here's exactly what happens from the moment someone contacts you."
 
-VAPI VOICE AI BUTTON (floating, visible on all pages):
-- Microphone icon button fixed bottom-left
-- Label: "Talk to AI Now"
-- On click: initiates Vapi voice call
-- Voice agent introduces itself, runs the same qualification script as the chat widget
-- Ends with booking confirmation or escalation to live staff
+Animated 6-step horizontal flow (desktop) / vertical timeline (mobile):
 
----
+Step 1 — 📞 Lead contacts you
+Icon: phone/chat bubble. Text: "Customer calls, texts, or chats — any time, day or night"
 
-SERVICES SECTION:
-Grid of service cards for: ${payload.services}
-Each card: icon + service name + 1-line description + "Get a Quote" button (triggers chat widget)
+Step 2 — 🤖 AI answers instantly
+Icon: robot. Text: "Voice AI or chat AI picks up in under 3 seconds. No hold music. No voicemail."
 
----
+Step 3 — ✅ AI qualifies the lead
+Icon: checklist. Text: "Collects name, phone, service needed, urgency level, and location"
 
-SOCIAL PROOF / TRUST STRIP:
-- Star rating: ${payload.stars} stars
-- Reviews: ${payload.reviews}
-- Badges: "Licensed & Insured", "Same-Day Service Available", "AI-Powered 24/7 Support"
-- Years in business: ${payload.years}
+Step 4 — 🚨 Emergency routing
+Icon: siren. Text: "True emergencies get escalated to a live tech immediately via call transfer"
 
----
+Step 5 — 📅 Routine booking
+Icon: calendar. Text: "Non-urgent leads see available slots and book directly — confirmation text sent instantly"
 
-WHY US SECTION — 3 columns:
-1. "We Answer 24/7" — AI never sleeps. Your competitors' voicemail does.
-2. "Book in 60 Seconds" — Our AI qualifies and schedules while you're on the job.
-3. "Real Pros, Real Fast" — ${payload.years} years serving ${payload.location}.
+Step 6 — 🔄 GHL automation kicks in
+Icon: lightning bolt. Text: "Contact added to CRM, pipeline updated, follow-up sequence starts, job reminder sent"
 
----
+Below the flow: "Every lead captured. Every job tracked. Zero manual work."
 
-ABOUT / STORY:
-${payload.story || `${payload.name} has been serving ${payload.location} for ${payload.years} years. We built this AI system because we were tired of losing jobs to missed calls.`}
+===========================
+SECTION 4 — THE FULL STACK (What You're Getting)
+===========================
+Headline: "Not Just a Website. A Complete Lead Machine."
 
----
+4-column feature grid:
 
-FAQ SECTION (5 questions minimum):
-- "How does the AI chat work?"
-- "Can the AI handle emergencies?"
-- "What happens after I book online?"
-- "Is my information secure?"
-- "Do I talk to a real person or AI?" (answer: AI qualifies, real pros do the work)
+Column 1 — 🌐 Professional Website
+- Mobile-first design
+- Fast loading under 2 seconds
+- SEO optimized for ${payload.location}
+- Click-to-call on every page
+- Built to convert visitors into booked jobs
 
----
+Column 2 — 🤖 AI Chat (24/7)
+- Powered by GoHighLevel
+- Answers every chat instantly
+- Qualifies leads with smart questions
+- Books appointments automatically
+- Escalates emergencies to live staff
+- Syncs all conversations to your CRM
 
-FOOTER:
-- Logo + tagline: "Powered by AI. Backed by Experience."
-- Phone: ${payload.callTracking || payload.phone}
-- Location: ${payload.location}
-- Links: Services, About, Book Now, Privacy Policy
-- "AI chat available 24/7" badge
+Column 3 — 🎙️ Voice AI (24/7)
+- Powered by Vapi
+- Answers calls after hours
+- Natural conversation — not a robot menu
+- Captures caller name, number, and issue
+- Books or dispatches based on urgency
+- Full call transcript saved to GHL
 
----
+Column 4 — ⚡ GHL Automation
+- All leads flow into one CRM
+- Automated SMS follow-up within 2 minutes
+- Appointment reminder sequences
+- Review request automation after job complete
+- Pipeline tracking from lead to closed job
+- Monthly reporting dashboard
 
-TECHNICAL REQUIREMENTS:
-- Mobile-first, fully responsive
-- Sticky header with phone number + "Book Now" CTA always visible
-- GHL embed for calendar booking widget
-- Vapi SDK integrated (voice call button)
-- GHL chat widget script in <head>
-- Google Analytics 4 + conversion events on: chat open, call click, form submit, booking complete
-- Page load < 2s (lazy load images, no heavy libraries)
-- Meta title: "${payload.name} | ${payload.type} in ${payload.location} | AI-Powered 24/7 Service"
-- OG image configured for social sharing
+===========================
+SECTION 5 — ROI CALCULATOR (interactive)
+===========================
+Headline: "How Much Are Missed Calls Costing You?"
 
-Colors: primary ${payload.primaryColor}, accent ${payload.accentColor}. Be extremely specific about layout, copy, component structure, and GHL/Vapi integration. Output only the site specification — no commentary.`;
+Interactive calculator with sliders/inputs:
+- "How many calls do you miss per week?" (slider: 1–20, default 5)
+- "Average job value?" (input: default $350)
+- "Close rate on answered calls?" (slider: 10–80%, default 40%)
+
+Auto-calculates and displays:
+- "Missed revenue per week: $X"
+- "Missed revenue per month: $X"
+- "Missed revenue per year: $X"
+- Bold callout: "Our AI recovers most of this. Starting Day 1."
+
+CTA below calculator: "Get Your Free AI Setup" → triggers chat widget
+
+===========================
+SECTION 6 — SERVICES
+===========================
+Grid of cards for: ${payload.services}
+Each card: relevant icon + service name + 2-line description + "Get a Quote" button (opens chat widget pre-filled with that service)
+
+===========================
+SECTION 7 — BEFORE vs AFTER
+===========================
+Headline: "What Changes When You Add AI"
+
+Two-column comparison table:
+
+WITHOUT AI | WITH ${payload.name} AI
+Calls go to voicemail after 5pm | AI answers every call 24/7
+Leads wait until morning for callback | Leads booked in under 60 seconds
+You lose jobs to competitors who answer | First to respond wins the job
+Manual follow-up (or none) | Automated SMS within 2 minutes
+No record of missed opportunities | Full CRM with every lead tracked
+One person handles phones and jobs | AI handles phones, you handle jobs
+
+===========================
+SECTION 8 — SOCIAL PROOF
+===========================
+Star rating display: ${payload.stars} ★ with review count
+3 featured review cards pulled from: ${payload.reviews || 'Google Reviews'}
+Trust badges row: "Google Verified" · "Licensed & Insured" · "AI-Powered" · "${payload.years} Years in Business"
+
+===========================
+SECTION 9 — ABOUT
+===========================
+${payload.story || `${payload.name} has been serving ${payload.location} for ${payload.years} years. We added AI because we were tired of losing jobs to missed calls. Now we answer every lead — and so can you.`}
+
+Photo placeholder: owner/team photo right side, story left side.
+
+===========================
+SECTION 10 — FAQ
+===========================
+Accordion-style. Minimum 6 questions:
+1. "How does the AI know what to say?" — Trained specifically on ${payload.type} services and your business details.
+2. "What if it's a real emergency?" — AI detects urgency and escalates to a live technician immediately via call transfer.
+3. "Does the AI replace my staff?" — No. AI handles intake and booking. Your team handles the actual work.
+4. "How fast does the AI respond?" — Under 3 seconds, every time, 24/7.
+5. "What happens after someone books?" — They get an instant SMS confirmation. You get a notification. GHL updates the pipeline automatically.
+6. "Can I see all my leads in one place?" — Yes — your GHL dashboard shows every contact, conversation, and booking in real time.
+
+===========================
+SECTION 11 — FINAL CTA BANNER
+===========================
+Bold full-width section, primary brand color background.
+Headline: "Ready to Stop Missing Jobs?"
+Subheadline: "Try the AI live — no commitment. See exactly what your customers will experience."
+Two buttons: "Try AI Demo Now" (opens chat) · "Call ${payload.callTracking || payload.phone}"
+
+===========================
+SECTION 12 — FOOTER
+===========================
+Logo + tagline: "Powered by AI. Backed by ${payload.years} Years of Experience."
+Columns: Services list · Contact info (${payload.phone}, ${payload.location}) · Quick links
+Bottom bar: © ${payload.name} · Privacy Policy · "AI available 24/7"
+
+===========================
+TECHNICAL REQUIREMENTS
+===========================
+- React + Tailwind CSS
+- Mobile-first responsive (test at 375px, 768px, 1280px)
+- Sticky header always visible with phone + Book Now
+- GHL chat widget script injected in <head>
+- Vapi SDK: floating mic button fixed bottom-left, initiates voice call on click
+- GHL calendar embed for inline booking
+- ROI calculator: pure JavaScript, no external libs, updates in real time
+- Google Analytics 4: track events — chat_opened, voice_call_started, booking_completed, cta_clicked
+- Page speed: lazy load all images, no blocking scripts
+- Meta title: "${payload.name} | ${payload.type} in ${payload.location} | 24/7 AI-Powered Service"
+- Meta description: "AI answers every call and books every job for ${payload.name} in ${payload.location}. Try the live demo."
+- OG image: 1200×630, brand colors, business name + "AI-Powered 24/7"
+
+Colors: primary ${payload.primaryColor}, accent ${payload.accentColor}. Apply consistently across all CTAs, highlights, and section backgrounds.`;
 }
 
 function outreachPrompt(payload: Record<string, string>) {
