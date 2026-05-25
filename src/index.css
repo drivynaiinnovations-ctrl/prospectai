@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0f1117;
+  --surface: #181c27;
+  --surface2: #1e2333;
+  --border: #2a2f42;
+  --text: #e2e8f0;
+  --text2: #8892a4;
+  --text3: #4a5568;
+  --accent: #6366f1;
+  --green: #22c55e;
+  --amber: #f59e0b;
+  --blue: #3b82f6;
+  --red: #ef4444;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; }
+
+/* Tier/score colors */
+.score-hot  { color: #ef4444; }
+.score-warm { color: #f59e0b; }
+.score-cold { color: #6b7280; }
+
+/* Status row tinting */
+.status-won      { border-left: 3px solid #22c55e !important; }
+.status-lost     { border-left: 3px solid #ef4444 !important; opacity: 0.7; }
+.status-interested { border-left: 3px solid #f59e0b !important; }
+
+/* Prospect tier card border */
+.tier-hot  { border-left: 3px solid #ef4444 !important; }
+.tier-warm { border-left: 3px solid #f59e0b !important; }
+.tier-cold { border-left: 3px solid #6b7280 !important; }
+
+/* Signal pills */
+.pill-red   { background: rgba(239,68,68,0.15); color: #fca5a5; }
+.pill-amber { background: rgba(245,158,11,0.15); color: #fcd34d; }
+.pill-gray  { background: rgba(107,114,128,0.15); color: #9ca3af; }
