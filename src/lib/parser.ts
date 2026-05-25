@@ -1,53 +1,77 @@
 import type { Prospect } from '../types';
 
+function field(block: string, key: string): string {
+  const m = block.match(new RegExp(`^${key}:\\s*(.+)$`, 'm'));
+  return m ? m[1].trim() : '';
+}
+
 export function parseProspects(text: string): Prospect[] {
-  const start = text.indexOf('QUALIFY_START');
-  const end = text.indexOf('QUALIFY_END');
-  if (start === -1) return [];
+  const blocks = text.split('QUALIFY_START').slice(1);
+  const prospects: Prospect[] = [];
 
-  const block = text.slice(start + 13, end > -1 ? end : undefined).trim();
+  for (const raw of blocks) {
+    const block = raw.split('QUALIFY_END')[0].trim();
+    if (!block) continue;
 
-  return block
-    .split('\n')
-    .filter(l => l.trim() && l.includes('|'))
-    .map(line => {
-      const get = (key: string) => {
-        const m = line.match(new RegExp(key + ':\\s*([^|\\n]+)'));
-        return m ? m[1].trim() : '';
-      };
-      const rm = line.match(/^\s*(\d+)\.\s*(.+?)\s*\|/);
-      const tier = (get('TIER') || 'COLD').toUpperCase() as 'HOT' | 'WARM' | 'COLD';
-      return {
-        rank: rm ? parseInt(rm[1]) : 0,
-        name: rm ? rm[2].trim() : 'Unknown',
-        score: parseInt(get('SCORE')) || 0,
-        tier,
-        type: get('TYPE') || 'Business',
-        phone: get('PHONE') || '',
-        website: get('WEBSITE') || '',
-        signals: get('SIGNALS').split(',').map(s => s.trim()).filter(Boolean),
-        reason: get('REASON') || '',
-      };
-    })
-    .filter(p => p.name && p.name !== 'Unknown');
+    const name = field(block, 'name');
+    if (!name) continue;
+
+    const tier = (field(block, 'tier') || 'COLD').toUpperCase() as 'HOT' | 'WARM' | 'COLD';
+    const signalsRaw = field(block, 'signals');
+
+    prospects.push({
+      rank: parseInt(field(block, 'rank')) || prospects.length + 1,
+      name,
+      score: parseInt(field(block, 'score')) || 0,
+      tier,
+      type: field(block, 'type') || 'Business',
+      phone: field(block, 'phone').replace(/^none$/i, ''),
+      website: field(block, 'website').replace(/^none$/i, ''),
+      signals: signalsRaw ? signalsRaw.split(',').map(s => s.trim()).filter(Boolean) : [],
+      reason: field(block, 'reason'),
+    });
+  }
+
+  return prospects;
 }
 
 export function parseOutreach(text: string): { call: string; email: string; text: string } {
-  const extract = (start: string, next?: string) => {
-    const s = text.indexOf(start);
+  const extract = (startTag: string, endTag: string) => {
+    const s = text.indexOf(startTag);
     if (s === -1) return '';
-    const from = s + start.length;
-    const e = next ? text.indexOf(next, from) : -1;
+    const from = s + startTag.length;
+    const e = text.indexOf(endTag, from);
     return (e > -1 ? text.slice(from, e) : text.slice(from)).trim();
   };
   return {
-    call: extract('CALL_SCRIPT', 'EMAIL'),
-    email: extract('EMAIL', 'TEXT_MESSAGE'),
-    text: extract('TEXT_MESSAGE'),
+    call: extract('CALL_START', 'CALL_END'),
+    email: extract('EMAIL_START', 'EMAIL_END'),
+    text: extract('TEXT_START', 'TEXT_END'),
   };
 }
 
 export function parseSumUp(text: string): Record<string, string> {
+  // Worker returns JSON for sumup
+  try {
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    if (jsonMatch) {
+      const parsed = JSON.parse(jsonMatch[0]) as Record<string, string>;
+      return {
+        SERVICES: parsed.services || '',
+        LOCATION: parsed.location || '',
+        YEARS_IN_BUSINESS: parsed.years || '',
+        STAR_RATING: parsed.reviews?.match(/[\d.]+/)?.[0] || '',
+        REVIEW_COUNT: parsed.reviews?.match(/(\d+)\s*review/i)?.[1] || '',
+        TOP_REVIEW_1: '',
+        TOP_REVIEW_2: '',
+        TOP_REVIEW_3: '',
+        OFFER: parsed.offer || '',
+        BUSINESS_NAME: parsed.name || '',
+        PHONE: parsed.phone || '',
+      };
+    }
+  } catch { /* fall through to labeled parsing */ }
+
   const fields = [
     'BUSINESS_NAME', 'TAGLINE', 'LOCATION', 'PHONE', 'EMAIL',
     'BUSINESS_TYPE', 'STAR_RATING', 'REVIEW_COUNT', 'YEARS_IN_BUSINESS',
